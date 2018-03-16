@@ -59,7 +59,7 @@ public class DirectedGraph<T extends Comparable<? super T>> implements GraphInte
 		VertexInterface<T> beginVertex = vertices.getValue(begin);
 		VertexInterface<T> endVertex = vertices.getValue(end);
 		if(beginVertex != null && endVertex != null) {
-			result = beginVertex.disconnect(endVertex);
+			result = beginVertex.disconnect(beginVertex, endVertex);
 		}
 		if(result) {
 			edgeCount++;

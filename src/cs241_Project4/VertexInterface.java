@@ -8,7 +8,7 @@ public interface VertexInterface<T> {
 	public boolean isVisited();
 	public boolean connect(VertexInterface<T> endVertex, double edgeWeight);
 	public boolean connect(VertexInterface<T> endVertex);
-	public boolean disconnect(VertexInterface<T> endVertex);
+	public boolean disconnect(VertexInterface<T> originVertex, VertexInterface<T> endVertex);
 	public Iterator<VertexInterface<T>> getNeighborIterator();
 	public Iterator<Double> getWeightIterator();
 	public boolean hasNeighbor();

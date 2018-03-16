@@ -64,19 +64,11 @@ public class Vertex<T> implements VertexInterface<T> {
 		return connect(endVertex, 0);
 	}
 	
-	public boolean disconnect(VertexInterface<T> endVertex) {
-		Edge edge = new Edge(endVertex);
-		int counter = 0;
+	public boolean disconnect(VertexInterface<T> originVertex, VertexInterface<T> endVertex) {
+		Iterator <VertexInterface<T>> neighbors = originVertex.getNeighborIterator();
+		VertexInterface<T> nextNeighbor = neighbors.next();
 		boolean found = false;
-		while(!found) {
-			Edge edge2 = edgeList.getEntry(counter);
-			if(edge.equals(edge2)) {
-				found = true;
-				edgeList.remove(edge2);
-			} else {
-				counter++;
-			}
-		}
+		
 		return found;
 	}
 
