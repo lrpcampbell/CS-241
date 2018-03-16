@@ -1,9 +1,7 @@
 package cs241_Project4;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Program4 {
 	private static File cityFile = new File("city.dat");
@@ -28,6 +26,23 @@ public class Program4 {
 			} else {
 				int cityNum = Integer.parseInt(lineParts[1]);
 				dg.addVertex(cityNum);
+			}
+		}
+		
+		while(scanRoad.hasNext()) {
+			String line = scanRoad.nextLine();
+			String[] lineParts = line.split("\\s+");
+			String firstCity = lineParts[0];
+			if (!firstCity.equals("")) {
+				int city1Num = Integer.parseInt(firstCity);
+				int city2Num = Integer.parseInt(lineParts[1]);
+				int distance = Integer.parseInt(lineParts[2]);
+				dg.addEdge(city1Num, city2Num, distance);
+			} else {
+				int city1Num = Integer.parseInt(lineParts[1]);
+				int city2Num = Integer.parseInt(lineParts[2]);
+				int distance = Integer.parseInt(lineParts[3]);
+				dg.addEdge(city1Num, city2Num, distance);
 			}
 		}
 
@@ -73,27 +88,33 @@ public class Program4 {
 	}
 
 	private static void RCommand(DirectedGraph<Integer> dg) {
-		
+		Scanner scan = new Scanner(System.in);
+		System.out.print("City Codes: ");
+		String cityCodes = scan.nextLine();
 	}
 
 	private static void ICommand(DirectedGraph<Integer> dg) {
-		// TODO Auto-generated method stub
+		Scanner scan = new Scanner(System.in);
+		System.out.print("City Codes and Distance: ");
+		String codesAndDistance = scan.nextLine();
+		String[] input = codesAndDistance.split("\\s+");
 		
 	}
 
 	private static void DCommand(DirectedGraph<Integer> dg) {
-		// TODO Auto-generated method stub
-		
+		Scanner scan = new Scanner(System.in);
+		System.out.print("City Codes: ");
+		String cityCodes = scan.nextLine(); 
+		System.out.print("");
 	}
 
 	private static void QCommand(DirectedGraph<Integer> dg) throws IOException {
 		scanCity = new Scanner(cityFile);
 		Scanner scan = new Scanner(System.in);
-		String cityCode = "";
 		boolean found = false;
 		
 		System.out.print("City Code: ");
-		cityCode = scan.nextLine();
+		String cityCode = scan.nextLine();
 		
 		while (scanCity.hasNext() || !found) {
 			String line = scanCity.nextLine();
@@ -126,5 +147,73 @@ public class Program4 {
 			}
 		}
 		scanCity.close();
+	}
+	
+	public static String findCityName(String cityCode) throws IOException {
+		scanCity = new Scanner(cityFile);
+		Scanner scan = new Scanner(System.in);
+		boolean found = false;
+		String city = "";
+		
+		while (scanCity.hasNext() || !found) {
+			String line = scanCity.nextLine();
+			String[] lineParts = line.split("\\s+");
+			String cityNumStr = lineParts[0];
+			if (cityNumStr.equals("")) {
+				try {
+					if(cityCode.equalsIgnoreCase(lineParts[2])) {
+						found = true;
+						city = lineParts[3];
+					}
+				} catch(ArrayIndexOutOfBoundsException e) {
+					found = true;
+				}
+			} else {
+				try {
+					if(cityCode.equalsIgnoreCase(lineParts[1])) {
+						found = true;
+						city = lineParts[2];
+					}
+				} catch(ArrayIndexOutOfBoundsException e) {
+					found = true;
+				}
+			}
+		}
+		scanCity.close();
+		return city;
+	}
+	
+	public static int findCityNumber(String cityCode) throws IOException {
+		scanCity = new Scanner(cityFile);
+		Scanner scan = new Scanner(System.in);
+		boolean found = false;
+		int city = 0;
+		
+		while (scanCity.hasNext() || !found) {
+			String line = scanCity.nextLine();
+			String[] lineParts = line.split("\\s+");
+			String cityNumStr = lineParts[0];
+			if (cityNumStr.equals("")) {
+				try {
+					if(cityCode.equalsIgnoreCase(lineParts[2])) {
+						found = true;
+						city = Integer.parseInt(lineParts[1]);
+					}
+				} catch(ArrayIndexOutOfBoundsException e) {
+					found = true;
+				}
+			} else {
+				try {
+					if(cityCode.equalsIgnoreCase(lineParts[1])) {
+						found = true;
+						city = Integer.parseInt(cityNumStr);
+					}
+				} catch(ArrayIndexOutOfBoundsException e) {
+					found = true;
+				}
+			}
+		}
+		scanCity.close();
+		return city;
 	}
 }
