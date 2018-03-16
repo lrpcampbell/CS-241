@@ -87,18 +87,58 @@ public class Program4 {
 		scanRoad.close();
 	}
 
-	private static void RCommand(DirectedGraph<Integer> dg) {
+	private static void RCommand(DirectedGraph<Integer> dg) throws IOException {
 		Scanner scan = new Scanner(System.in);
+		int city1 = 0, city2 = 0, distance = 0;
+		String city1Code, city2Code;
 		System.out.print("City Codes: ");
 		String cityCodes = scan.nextLine();
+		String codesAndDistance = scan.nextLine();
+		String[] input = codesAndDistance.split("\\s+");
+		city1 = findCityNumber(input[0]);
+		city1Code = input[0];
+		city2 = findCityNumber(input[1]);
+		city2Code = input[1];
+		
+		if(city1 == 0 && city2 == 0) {
+			System.out.print("Both of these cities does not exist.");
+		} else if(city1 == 0 || city2 == 0) {
+			System.out.print("One of these cities does not exist.");
+		} else {
+			if(dg.hasEdge(city1, city2)) {
+				System.out.print("There is already a road between "+findCityName(city1Code)+" and "+findCityName(city2Code));
+			} else {
+				dg.addEdge(city1, city2, distance);
+				System.out.print("You have inserted a road between "+findCityName(city1Code)+" and "+findCityName(city2Code)+" with a distance of "+distance);
+			}
+		}
 	}
 
-	private static void ICommand(DirectedGraph<Integer> dg) {
+	private static void ICommand(DirectedGraph<Integer> dg) throws IOException {
 		Scanner scan = new Scanner(System.in);
+		int city1 = 0, city2 = 0, distance = 0;
+		String city1Code, city2Code;
 		System.out.print("City Codes and Distance: ");
 		String codesAndDistance = scan.nextLine();
 		String[] input = codesAndDistance.split("\\s+");
+		city1 = findCityNumber(input[0]);
+		city1Code = input[0];
+		city2 = findCityNumber(input[1]);
+		city2Code = input[1];
+		distance = Integer.parseInt(input[2]);
 		
+		if(city1 == 0 && city2 == 0) {
+			System.out.print("Both of these cities does not exist.");
+		} else if(city1 == 0 || city2 == 0) {
+			System.out.print("One of these cities does not exist.");
+		} else {
+			if(dg.hasEdge(city1, city2)) {
+				System.out.print("There is already a road between "+findCityName(city1Code)+" and "+findCityName(city2Code));
+			} else {
+				dg.addEdge(city1, city2, distance);
+				System.out.print("You have inserted a road between "+findCityName(city1Code)+" and "+findCityName(city2Code)+" with a distance of "+distance);
+			}
+		}
 	}
 
 	private static void DCommand(DirectedGraph<Integer> dg) {
