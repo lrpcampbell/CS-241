@@ -1,17 +1,39 @@
 package cs241_Project4;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Program4 {
+	private static File cityFile = new File("city.dat");
+	private static File roadFile = new File("road.dat");
+	private static Scanner scanCity;
+	private static Scanner scanRoad;
+	
 	public static void main(String[] args) throws IOException {
 		String command = "";
 		Scanner scan = new Scanner(System.in);
-		DirectedGraph<> dg = new DirectedGraph<>();
+		DirectedGraph<Integer> dg = new DirectedGraph<>();
+		scanCity = new Scanner(cityFile);
+		scanRoad = new Scanner(roadFile);
+		
+		while (scanCity.hasNext()) {
+			String line = scanCity.nextLine();
+			String[] lineParts = line.split("\\s+");
+			String cityNumStr = lineParts[0];
+			if (!cityNumStr.equals("")) {
+				int cityNum = Integer.parseInt(cityNumStr);
+				dg.addVertex(cityNum);
+			} else {
+				int cityNum = Integer.parseInt(lineParts[1]);
+				dg.addVertex(cityNum);
+			}
+		}
 
 		// Checks if command is not E to exit
 		while (!command.equalsIgnoreCase("E")) {
-			System.out.print("Command? ");
+			System.out.print("\nCommand? ");
 			command = scan.nextLine();
 
 			switch (command.toUpperCase()) {
@@ -46,25 +68,63 @@ public class Program4 {
 				break;
 			}
 		}
+		scanCity.close();
+		scanRoad.close();
 	}
 
-	private static void RCommand(DirectedGraph<String> dg) {
+	private static void RCommand(DirectedGraph<Integer> dg) {
+		
+	}
+
+	private static void ICommand(DirectedGraph<Integer> dg) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private static void ICommand(DirectedGraph<String> dg) {
+	private static void DCommand(DirectedGraph<Integer> dg) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private static void DCommand(DirectedGraph<String> dg) {
-		// TODO Auto-generated method stub
+	private static void QCommand(DirectedGraph<Integer> dg) throws IOException {
+		scanCity = new Scanner(cityFile);
+		Scanner scan = new Scanner(System.in);
+		String cityCode = "";
+		boolean found = false;
 		
-	}
-
-	private static void QCommand(DirectedGraph<String> dg) {
-		// TODO Auto-generated method stub
+		System.out.print("City Code: ");
+		cityCode = scan.nextLine();
 		
+		while (scanCity.hasNext() || !found) {
+			String line = scanCity.nextLine();
+			String[] lineParts = line.split("\\s+");
+			String cityNumStr = lineParts[0];
+			if (cityNumStr.equals("")) {
+				try {
+					if(cityCode.equalsIgnoreCase(lineParts[2])) {
+						found = true;
+						for(int i = 0; i < lineParts.length; i++) {
+							System.out.print(lineParts[i]+" ");
+						}
+					}
+				} catch(ArrayIndexOutOfBoundsException e) {
+					found = true;
+					System.out.print("This city does not exist.");
+				}
+			} else {
+				try {
+					if(cityCode.equalsIgnoreCase(lineParts[1])) {
+						found = true;
+						for(int i = 0; i < lineParts.length; i++) {
+							System.out.print(lineParts[i]+" ");
+						}
+					}
+				} catch(ArrayIndexOutOfBoundsException e) {
+					found = true;
+					System.out.print("This city does not exist.");
+				}
+			}
+		}
+		scanCity.close();
 	}
 }
