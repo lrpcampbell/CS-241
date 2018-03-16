@@ -89,16 +89,11 @@ public class Program4 {
 
 	private static void RCommand(DirectedGraph<Integer> dg) throws IOException {
 		Scanner scan = new Scanner(System.in);
-		int city1 = 0, city2 = 0, distance = 0;
-		String city1Code, city2Code;
 		System.out.print("City Codes: ");
-		String cityCodes = scan.nextLine();
-		String codesAndDistance = scan.nextLine();
-		String[] input = codesAndDistance.split("\\s+");
-		city1 = findCityNumber(input[0]);
-		city1Code = input[0];
-		city2 = findCityNumber(input[1]);
-		city2Code = input[1];
+		String city1Code = scan.next();
+		String city2Code = scan.next();
+		int city1 = findCityNumber(city1Code);
+		int city2 = findCityNumber(city2Code);
 		
 		if(city1 == 0 && city2 == 0) {
 			System.out.print("Both of these cities does not exist.");
@@ -106,46 +101,55 @@ public class Program4 {
 			System.out.print("One of these cities does not exist.");
 		} else {
 			if(dg.hasEdge(city1, city2)) {
-				System.out.print("There is already a road between "+findCityName(city1Code)+" and "+findCityName(city2Code));
+				dg.removeEdge(city1, city2);
+				System.out.print("You have removed a road between "+findCityName(city1Code)+" and "+findCityName(city2Code));
 			} else {
-				dg.addEdge(city1, city2, distance);
-				System.out.print("You have inserted a road between "+findCityName(city1Code)+" and "+findCityName(city2Code)+" with a distance of "+distance);
+				System.out.print("The road between "+findCityName(city1Code)+" and "+findCityName(city2Code)+" does not exist.");
 			}
 		}
 	}
 
 	private static void ICommand(DirectedGraph<Integer> dg) throws IOException {
 		Scanner scan = new Scanner(System.in);
-		int city1 = 0, city2 = 0, distance = 0;
-		String city1Code, city2Code;
+		int distance = 0;
 		System.out.print("City Codes and Distance: ");
-		String codesAndDistance = scan.nextLine();
-		String[] input = codesAndDistance.split("\\s+");
-		city1 = findCityNumber(input[0]);
-		city1Code = input[0];
-		city2 = findCityNumber(input[1]);
-		city2Code = input[1];
-		distance = Integer.parseInt(input[2]);
-		
-		if(city1 == 0 && city2 == 0) {
-			System.out.print("Both of these cities does not exist.");
-		} else if(city1 == 0 || city2 == 0) {
-			System.out.print("One of these cities does not exist.");
-		} else {
-			if(dg.hasEdge(city1, city2)) {
-				System.out.print("There is already a road between "+findCityName(city1Code)+" and "+findCityName(city2Code));
+		String city1Code = scan.next();
+		String city2Code = scan.next();
+		int city1 = findCityNumber(city1Code);
+		int city2 = findCityNumber(city2Code);
+		try {
+			distance = Integer.parseInt(scan.next());
+			if(city1 == 0 && city2 == 0) {
+				System.out.print("Both of these cities does not exist.");
+			} else if(city1 == 0 || city2 == 0) {
+				System.out.print("One of these cities does not exist.");
 			} else {
-				dg.addEdge(city1, city2, distance);
-				System.out.print("You have inserted a road between "+findCityName(city1Code)+" and "+findCityName(city2Code)+" with a distance of "+distance);
+				if(dg.hasEdge(city1, city2)) {
+					System.out.print("There is already a road between "+findCityName(city1Code)+" and "+findCityName(city2Code));
+				} else {
+					dg.addEdge(city1, city2, distance);
+					System.out.print("You have inserted a road between "+findCityName(city1Code)+" and "+findCityName(city2Code)+" with a distance of "+distance);
+				}
 			}
+		} catch(NumberFormatException e) {
+			System.out.print("This is not an appropriate distance.");
 		}
 	}
 
-	private static void DCommand(DirectedGraph<Integer> dg) {
+	private static void DCommand(DirectedGraph<Integer> dg) throws IOException {
 		Scanner scan = new Scanner(System.in);
+		StackInterface<Integer> path = new LinkedStack<>();
 		System.out.print("City Codes: ");
-		String cityCodes = scan.nextLine(); 
-		System.out.print("");
+		String city1Code = scan.next();
+		String city2Code = scan.next();
+		int city1 = findCityNumber(city1Code);
+		int city2 = findCityNumber(city2Code);
+		
+		double length = dg.getCheapestPath(city1, city2, path);
+		System.out.print("The minimum distance between "+findCityName(city1Code)+" and "+findCityName(city2Code)+" is "+length+" through the route: ");
+		while(!path.isEmpty()) {
+			System.out.print(findCityCode(path.pop())+" ");
+		}
 	}
 
 	private static void QCommand(DirectedGraph<Integer> dg) throws IOException {
@@ -195,7 +199,7 @@ public class Program4 {
 		boolean found = false;
 		String city = "";
 		
-		while (scanCity.hasNext() || !found) {
+		while (scanCity.hasNext() && !found) {
 			String line = scanCity.nextLine();
 			String[] lineParts = line.split("\\s+");
 			String cityNumStr = lineParts[0];
@@ -204,6 +208,11 @@ public class Program4 {
 					if(cityCode.equalsIgnoreCase(lineParts[2])) {
 						found = true;
 						city = lineParts[3];
+						try {
+							int elevation = Integer.parseInt(lineParts[4]);
+						} catch (NumberFormatException e) {
+							city += " "+lineParts[4];
+						}
 					}
 				} catch(ArrayIndexOutOfBoundsException e) {
 					found = true;
@@ -213,6 +222,11 @@ public class Program4 {
 					if(cityCode.equalsIgnoreCase(lineParts[1])) {
 						found = true;
 						city = lineParts[2];
+						try {
+							int elevation = Integer.parseInt(lineParts[3]);
+						} catch (NumberFormatException e) {
+							city += " "+lineParts[3];
+						}
 					}
 				} catch(ArrayIndexOutOfBoundsException e) {
 					found = true;
@@ -229,7 +243,7 @@ public class Program4 {
 		boolean found = false;
 		int city = 0;
 		
-		while (scanCity.hasNext() || !found) {
+		while (scanCity.hasNext() && !found) {
 			String line = scanCity.nextLine();
 			String[] lineParts = line.split("\\s+");
 			String cityNumStr = lineParts[0];
@@ -247,6 +261,40 @@ public class Program4 {
 					if(cityCode.equalsIgnoreCase(lineParts[1])) {
 						found = true;
 						city = Integer.parseInt(cityNumStr);
+					}
+				} catch(ArrayIndexOutOfBoundsException e) {
+					found = true;
+				}
+			}
+		}
+		scanCity.close();
+		return city;
+	}
+	
+	public static String findCityCode(int cityNum) throws IOException {
+		scanCity = new Scanner(cityFile);
+		Scanner scan = new Scanner(System.in);
+		boolean found = false;
+		String city = "";
+		
+		while (scanCity.hasNext() && !found) {
+			String line = scanCity.nextLine();
+			String[] lineParts = line.split("\\s+");
+			String cityNumStr = lineParts[0];
+			if (cityNumStr.equals("")) {
+				try {
+					if(cityNum == Integer.parseInt(lineParts[1])) {
+						found = true;
+						city = lineParts[2];
+					}
+				} catch(ArrayIndexOutOfBoundsException e) {
+					found = true;
+				}
+			} else {
+				try {
+					if(cityNum == Integer.parseInt(lineParts[0])) {
+						found = true;
+						city = lineParts[1];
 					}
 				} catch(ArrayIndexOutOfBoundsException e) {
 					found = true;

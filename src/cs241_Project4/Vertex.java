@@ -63,6 +63,22 @@ public class Vertex<T> implements VertexInterface<T> {
 	public boolean connect(VertexInterface<T> endVertex) {
 		return connect(endVertex, 0);
 	}
+	
+	public boolean disconnect(VertexInterface<T> endVertex) {
+		Edge edge = new Edge(endVertex);
+		int counter = 0;
+		boolean found = false;
+		while(!found) {
+			Edge edge2 = edgeList.getEntry(counter);
+			if(edge.equals(edge2)) {
+				found = true;
+				edgeList.remove(edge2);
+			} else {
+				counter++;
+			}
+		}
+		return found;
+	}
 
 	@Override
 	public Iterator<VertexInterface<T>> getNeighborIterator() {
@@ -139,6 +155,10 @@ public class Vertex<T> implements VertexInterface<T> {
 			weight = edgeWeight;
 		}
 		
+		protected Edge(VertexInterface<T> endVertex) {
+			vertex = endVertex;
+		}
+		
 		protected VertexInterface<T> getEndVertex() {
 			return vertex;
 		}
@@ -188,15 +208,15 @@ public class Vertex<T> implements VertexInterface<T> {
 		}
 		
 		public Double next() {
-			VertexInterface<T> nextNeighbor = null;
+			Double edgeWeight = new Double(0);
 			if(edges.hasNext()) {
 				Edge edgeToNextNeighbor = edges.next();
-				nextNeighbor = edgeToNextNeighbor.getEndVertex();
+				edgeWeight = edgeToNextNeighbor.getWeight();
 			} else {
 				throw new NoSuchElementException();
 			}
 			
-			return nextNeighbor.getCost();
+			return edgeWeight;
 		}
 		
 		public void remove() {
