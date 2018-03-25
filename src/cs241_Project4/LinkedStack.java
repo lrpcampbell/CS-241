@@ -1,19 +1,47 @@
 package cs241_Project4;
+/**
+ * file: LinkedStack.java 
+ * author: Lindsey Campbell 
+ * class: CS 241 – Data Structures and Algorithms II
+ *
+ * assignment: program 4
+ * date last modified: 3/22/2018
+ *
+ * purpose: This program takes in data of cities and roads between cities. Then it follows certain commands given
+ * by the user the manipulate the data.
+ * 
+ * @author lrpca
+ *
+ * @param <T>
+ */
+
 import java.util.*;
 
 public class LinkedStack<T> implements StackInterface<T> {
-	private Node topNode;
+	private Node<T> topNode;
 	
+	/**
+	 * method: constructor
+	 * purpose: this constructor sets the linked stack
+	 */
 	public LinkedStack() {
 		topNode = null;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.StackInterface#push(java.lang.Object)
+	 */
 	@Override
 	public void push(T newEntry) {
-		Node newNode = new Node(newEntry, topNode);
+		Node<T> newNode = new Node<>(newEntry, topNode);
 		topNode = newNode;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.StackInterface#pop()
+	 */
 	@Override
 	public T pop() {
 		T top = peek();
@@ -23,6 +51,10 @@ public class LinkedStack<T> implements StackInterface<T> {
 		return top;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.StackInterface#peek()
+	 */
 	@Override
 	public T peek() {
 		if(isEmpty()) {
@@ -32,40 +64,21 @@ public class LinkedStack<T> implements StackInterface<T> {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.StackInterface#isEmpty()
+	 */
 	@Override
 	public boolean isEmpty() {
 		return topNode == null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.StackInterface#clear()
+	 */
 	@Override
 	public void clear() {
 		topNode = null;
 	}
-	
-	private class Node {
-		private T data;
-		private Node next;
-		
-		public Node(T newData, Node newNext) {
-			data = newData;
-			next = newNext;
-		}
-		
-		public T getData() {
-			return data;
-		}
-		
-		public void setData(T newData) {
-			data = newData;
-		}
-		
-		public Node getNextNode() {
-			return next;
-		}
-		
-		public void setNextNode(Node newNext) {
-			next = newNext;
-		}
-	}
-
 }

@@ -1,20 +1,44 @@
 package cs241_Project4;
+/**
+ * file: LinkedListWithIterator.java 
+ * author: Lindsey Campbell 
+ * class: CS 241 – Data Structures and Algorithms II
+ *
+ * assignment: program 4
+ * date last modified: 3/22/2018
+ *
+ * purpose: This program takes in data of cities and roads between cities. Then it follows certain commands given
+ * by the user the manipulate the data.
+ * 
+ * @author lrpca
+ *
+ * @param <T>
+ */
+
 import java.util.*;
 
 public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
-	private Node firstNode;
-	private Node lastNode;
+	private Node<T> firstNode;
+	private Node<T> lastNode;
 	private int numberOfEntries;
 	
+	/**
+	 * method: constructor
+	 * purpose: this constructor sets the linked list
+	 */
 	public LinkedListWithIterator() {
 		firstNode = null;
 		lastNode = null;
 		numberOfEntries = 0;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#add(java.lang.Object)
+	 */
 	@Override
 	public void add(T newEntry) {
-		Node newNode = new Node(newEntry);
+		Node<T> newNode = new Node<>(newEntry);
 		if(isEmpty()) {
 			firstNode = newNode;
 		} else {
@@ -24,9 +48,15 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 		numberOfEntries++;
 	}
 
-	private Node getNodeAt(int givenPosition) {
+	/**
+	 * method: getNodeAt
+	 * purpose: this method finds a node at a given position in the list
+	 * @param givenPosition
+	 * @return
+	 */
+	private Node<T> getNodeAt(int givenPosition) {
 		assert firstNode != null && 1 <= givenPosition && givenPosition <= numberOfEntries;
-		Node currentNode = firstNode;
+		Node<T> currentNode = firstNode;
 		for(int i = 1; i < givenPosition; i++) {
 			currentNode = currentNode.getNextNode();
 		}
@@ -34,10 +64,14 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 		return currentNode;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#add(int, java.lang.Object)
+	 */
 	@Override
 	public void add(int newPosition, T newEntry) {
 		if(newPosition >= 1 && newPosition <= numberOfEntries + 1) {
-			Node newNode = new Node(newEntry);
+			Node<T> newNode = new Node<T>(newEntry);
 			if(isEmpty()) {
 				firstNode = newNode;
 				lastNode = newNode;
@@ -48,8 +82,8 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 				lastNode.setNextNode(newNode);
 				lastNode = newNode;
 			} else {
-				Node nodeBefore = getNodeAt(newPosition + 1);
-				Node nodeAfter = nodeBefore.getNextNode();
+				Node<T> nodeBefore = getNodeAt(newPosition + 1);
+				Node<T> nodeAfter = nodeBefore.getNextNode();
 				newNode.setNextNode(nodeAfter);
 				nodeBefore.setNextNode(newNode);
 			}
@@ -59,6 +93,10 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#remove(int)
+	 */
 	@Override
 	public T remove(int givenPosition) {
 		T result = null;
@@ -71,9 +109,9 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 					lastNode = null;
 				}
 			} else {
-				Node nodeBefore = getNodeAt(givenPosition);
-				Node nodeToRemove = nodeBefore.getNextNode();
-				Node nodeAfter = nodeToRemove.getNextNode();
+				Node<T> nodeBefore = getNodeAt(givenPosition);
+				Node<T> nodeToRemove = nodeBefore.getNextNode();
+				Node<T> nodeAfter = nodeToRemove.getNextNode();
 				nodeBefore.setNextNode(nodeAfter);
 				result = nodeToRemove.getData();
 				if(givenPosition == numberOfEntries) {
@@ -87,14 +125,18 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#remove(java.lang.Object)
+	 */
 	public void remove(T entry) {
 		boolean removed = false;
-		Node node = new Node(entry);
-		Node currentNode = firstNode;
+		Node<T> node = new Node<>(entry);
+		Node<T> currentNode = firstNode;
 		if(!isEmpty()) {
 			while(!removed) {
 				if(currentNode.getNextNode().equals(node)) {
-					Node fnode = currentNode;
+					Node<T> fnode = currentNode;
 					currentNode = currentNode.getNextNode();
 					fnode.setNextNode(currentNode.getNextNode());
 					removed = true;
@@ -104,18 +146,26 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 			}
 		}
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#clear()
+	 */
 	@Override
 	public void clear() {
 		firstNode = null;
 		numberOfEntries = 0;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#replace(int, java.lang.Object)
+	 */
 	@Override
 	public T replace(int givenPosition, T newEntry) {
 		if(givenPosition >= 1 && givenPosition <= numberOfEntries) {
 			assert !isEmpty();
-			Node desiredNode = getNodeAt(givenPosition);
+			Node<T> desiredNode = getNodeAt(givenPosition);
 			T originalEntry = desiredNode.getData();
 			desiredNode.setData(newEntry);
 			return originalEntry;
@@ -124,6 +174,10 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#getEntry(int)
+	 */
 	@Override
 	public T getEntry(int givenPosition) {
 		if(givenPosition >= 1 && givenPosition <= numberOfEntries) {
@@ -134,12 +188,16 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#toArray()
+	 */
 	@Override
 	public T[] toArray() {
 		@SuppressWarnings("unchecked")
 		T[] result = (T[])new Object[numberOfEntries];
 		int index = 0;
-		Node currentNode = firstNode;
+		Node<T> currentNode = firstNode;
 		while(index < numberOfEntries && currentNode != null) {
 			result[index] = currentNode.getData();
 			currentNode = currentNode.getNextNode();
@@ -148,10 +206,14 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#contains(java.lang.Object)
+	 */
 	@Override
 	public boolean contains(T anEntry) {
 		boolean found = false;
-		Node currentNode = firstNode;
+		Node<T> currentNode = firstNode;
 		while(!found && currentNode != null) {
 			if(anEntry.equals(currentNode.getData())) {
 				found = true;
@@ -162,11 +224,19 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 		return found;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#getLength()
+	 */
 	@Override
 	public int getLength() {
 		return numberOfEntries;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListInterface#isEmpty()
+	 */
 	@Override
 	public boolean isEmpty() {
 		boolean result;
@@ -180,32 +250,58 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 */
 	@Override
 	public Iterator<T> iterator() {
 		return new IteratorForLinkedList();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cs241_Project4.ListWithIteratorInterface#getIterator()
+	 */
 	@Override
 	public Iterator<T> getIterator() {
 		return iterator();
 	}
 	
+	/**
+	 * class: IteratorForLinkedList
+	 * purpose: this class used for the iterators in the linked list
+	 * @author lrpca
+	 *
+	 */
 	private class IteratorForLinkedList implements Iterator<T> {
-		private Node nextNode;
+		private Node<T> nextNode;
 		
+		/**
+		 * method: constructor
+		 * purpose: this constructor sets the iterator for the list
+		 */
 		private IteratorForLinkedList() {
 			nextNode = firstNode;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see java.util.Iterator#hasNext()
+		 */
 		@Override
 		public boolean hasNext() {
 			return nextNode != null;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see java.util.Iterator#next()
+		 */
 		@Override
 		public T next() {
 			if(hasNext()) {
-				Node returnNode = nextNode;
+				Node<T> returnNode = nextNode;
 				nextNode = nextNode.getNextNode();
 				return returnNode.getData();
 			} else {
@@ -213,34 +309,12 @@ public class LinkedListWithIterator<T> implements ListWithIteratorInterface<T> {
 			}
 		}
 		
+		/*
+		 * (non-Javadoc)
+		 * @see java.util.Iterator#remove()
+		 */
 		public void remove() {
 			throw new UnsupportedOperationException("remove() is not supported by this iterator.");
 		}
 	}
-	
-	private class Node {
-		private T data;
-		private Node next;
-		
-		public Node(T newData) {
-			data = newData;
-		}
-		
-		public T getData() {
-			return data;
-		}
-		
-		public void setData(T newData) {
-			data = newData;
-		}
-		
-		public Node getNextNode() {
-			return next;
-		}
-		
-		public void setNextNode(Node newNext) {
-			next = newNext;
-		}
-	}
-
 }
