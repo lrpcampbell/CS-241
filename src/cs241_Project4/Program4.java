@@ -24,6 +24,13 @@ public class Program4 {
 	private static Scanner scanCity;
 	private static Scanner scanRoad;
 	
+	/**
+	 * method: main
+	 * purpose: this method takes in the data from city.dat and road.dat and then asks for a command 
+	 * from the user and performs the right command
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 		String command = "";
 		Scanner scan = new Scanner(System.in);
@@ -102,6 +109,12 @@ public class Program4 {
 		scanRoad.close();
 	}
 
+	/**
+	 * method: RCommand
+	 * purpose: this method removes a road between two cities
+	 * @param dg Directed graph with all the information
+	 * @throws IOException
+	 */
 	private static void RCommand(DirectedGraph<Integer> dg) throws IOException {
 		Scanner scan = new Scanner(System.in);
 		System.out.print("City Codes: ");
@@ -124,6 +137,12 @@ public class Program4 {
 		}
 	}
 
+	/**
+	 * method: ICommand
+	 * purpose: this method inserts a road between two cities
+	 * @param dg Directed graph with all the information
+	 * @throws IOException
+	 */
 	private static void ICommand(DirectedGraph<Integer> dg) throws IOException {
 		Scanner scan = new Scanner(System.in);
 		int distance = 0;
@@ -151,6 +170,12 @@ public class Program4 {
 		}
 	}
 
+	/**
+	 * method: DCommand
+	 * purpose: this method finds the distance between two cities
+	 * @param dg Directed graph with all the information
+	 * @throws IOException
+	 */
 	private static void DCommand(DirectedGraph<Integer> dg) throws IOException {
 		Scanner scan = new Scanner(System.in);
 		StackInterface<Integer> path = new LinkedStack<>();
@@ -167,6 +192,12 @@ public class Program4 {
 		}
 	}
 
+	/**
+	 * method: QCommand
+	 * purpose: this method prints out all the information given for a city
+	 * @param dg Directed graph with all the information
+	 * @throws IOException
+	 */
 	private static void QCommand(DirectedGraph<Integer> dg) throws IOException {
 		scanCity = new Scanner(cityFile);
 		Scanner scan = new Scanner(System.in);
@@ -208,6 +239,13 @@ public class Program4 {
 		scanCity.close();
 	}
 	
+	/**
+	 * method: findCityName
+	 * purpose: this method finds the full name of the city
+	 * @param cityCode City code
+	 * @return City name
+	 * @throws IOException
+	 */
 	public static String findCityName(String cityCode) throws IOException {
 		scanCity = new Scanner(cityFile);
 		Scanner scan = new Scanner(System.in);
@@ -252,6 +290,13 @@ public class Program4 {
 		return city;
 	}
 	
+	/**
+	 * method: findCityNumber
+	 * purpose: this method finds the city number
+	 * @param cityCode City code
+	 * @return City number
+	 * @throws IOException
+	 */
 	public static int findCityNumber(String cityCode) throws IOException {
 		scanCity = new Scanner(cityFile);
 		Scanner scan = new Scanner(System.in);
@@ -286,6 +331,13 @@ public class Program4 {
 		return city;
 	}
 	
+	/**
+	 * method: findCityCode
+	 * purpose: this method finds the city code
+	 * @param cityNum City number
+	 * @return City code
+	 * @throws IOException
+	 */
 	public static String findCityCode(int cityNum) throws IOException {
 		scanCity = new Scanner(cityFile);
 		Scanner scan = new Scanner(System.in);
